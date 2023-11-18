@@ -1,7 +1,12 @@
 import { Db, MongoClient, ServerApiVersion } from "mongodb";
 
-const uri = process.env.ATLAS_URI || "";
-const dbName = process.env.DB_NAME || "";
+const uri = process.env.MONGODB_URI || "";
+
+if (!uri) {
+  throw new Error(
+    "Please define the MONGODB_URI and DB_NAME environment variables inside .env.local"
+  );
+}
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -18,7 +23,7 @@ export const connectDB = async () => {
   console.log("Connected to MongoDB");
   await client.db("admin").command({ ping: 1 });
   console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  db = client.db(dbName); // replace with your database name
+  db = client.db("client"); // replace with your database name
 };
 
 export const getDb = () => {
@@ -27,3 +32,4 @@ export const getDb = () => {
   }
   return db;
 };
+
