@@ -1,5 +1,4 @@
-const {ethers} = require("ethers");
-const {Wallet} = ethers;
+import { providers, Wallet } from "ethers";
 
 /**
  * Types
@@ -12,9 +11,9 @@ interface IInitArgs {
  * Library
  */
 export default class EIP155Lib {
-  wallet: any;
+  wallet: Wallet;
 
-  constructor(wallet: any) {
+  constructor(wallet: Wallet) {
     this.wallet = wallet;
   }
 
@@ -42,11 +41,11 @@ export default class EIP155Lib {
     return this.wallet._signTypedData(domain, types, data);
   }
 
-  connect(provider: any) {
+  connect(provider: providers.JsonRpcProvider) {
     return this.wallet.connect(provider);
   }
 
-  signTransaction(transaction: any) {
+  signTransaction(transaction: providers.TransactionRequest) {
     return this.wallet.signTransaction(transaction);
   }
 }
