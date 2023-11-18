@@ -1,19 +1,22 @@
-import { healthCheck } from "./routes/health";
+import "./config";
 import express from "express";
-import "./config"
 import { connectDB } from "./db";
+import bountyRoutes from "./routes/bounty"; // Import the bounty routes
 
 const app = express();
 const port = process.env.PORT;
 
-app.get("/health", healthCheck);
+app.use(express.json()); // Middleware for parsing JSON bodies
 
-connectDB().then(() => {
-  app.listen(port, () => {
+app.use("/api", bountyRoutes);
+
+connectDB()
+  .then(() => {
+    app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Database connection failed", err);
+    process.exit(1);
   });
-}).catch(err => {
-  console.error("Database connection failed", err);
-  process.exit(1);
-});
-

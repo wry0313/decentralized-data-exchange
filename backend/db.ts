@@ -18,7 +18,7 @@ const client = new MongoClient(uri, {
 
 let db: Db;
 
-export const connectDB = async () => {
+const connectDB = async () => {
   await client.connect();
   console.log("Connected to MongoDB");
   await client.db("admin").command({ ping: 1 });
@@ -26,10 +26,4 @@ export const connectDB = async () => {
   db = client.db("client"); // replace with your database name
 };
 
-export const getDb = () => {
-  if (!db) {
-    throw new Error("Database not initialized");
-  }
-  return db;
-};
-
+export { connectDB, db };
